@@ -34,12 +34,20 @@ $directorypath = Split-Path $invocation.MyCommand.Path
 
 $filepath = $directorypath + '\files\test.bin0'
 
-[int] $numToCopy = $($D_space / (Get-Item $filepath).length)
+[int] $numToCopy = $($C_space / (Get-Item $filepath).length)
 
 write-host "$numToCopy files to copy"
 
 
-del $($directorypath + '\fileCopies\*')
+# del $($directorypath + '\fileCopies\*')
+
+
+$curDate = $( get-date -uformat "%Y%m%d%H%M%S")
+
+if((Test-Path $($directorypath + '\fileCopies\')) -eq 0)
+{
+   mkdir $($directorypath + '\fileCopies\');
+}
 
 
 $nFiles = 32
@@ -50,7 +58,7 @@ for( $j=0; $j -lt $nToCopy; $j++) {
 
     $filepath = $directorypath + '\files\test.bin' + $mod
 
-    $copyPath = $directorypath + '\fileCopies\copy' + $j + '_from' + $($mod + 1)
+    $copyPath = $directorypath + '\fileCopies\copy_' + $curDate + '_' + $j
 
     copy $filepath $copyPath 
 
